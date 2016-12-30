@@ -33,6 +33,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.jessemitchell.popularmovies.app.BuildConfig.MOVIE_DB_API_KEY;
+
 /**
  * Created by jesse.mitchell on 12/28/2016.
  */
@@ -42,10 +44,6 @@ public class PopularMoviesFragment extends Fragment
     private final String LOG_TAG = PopularMoviesFragment.class.getSimpleName();
 
     private ImageAdapter movieDetailsAdapter;
-    public PopularMoviesFragment()
-    {
-
-    }
 
     @Override
     public void onStart() {
@@ -60,8 +58,6 @@ public class PopularMoviesFragment extends Fragment
         String listType = sharedPrefs.getString(getString(R.string.pref_list_key),getString(R.string.pref_list_default));
         movieTask.execute(listType);
     }
-
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -78,9 +74,8 @@ public class PopularMoviesFragment extends Fragment
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 MovieDetails movie = movieDetailsAdapter.getItem(i);
                 Intent movieDetailIntent = new Intent(getContext(),DisplayMovieDetailsActivity.class);
-                movieDetailIntent.putExtra("MovieDetails_data", (Parcelable) movie);
+                movieDetailIntent.putExtra(getString(R.string.movie_details_data), (Parcelable) movie);
                 startActivity(movieDetailIntent);
-//                Toast.makeText(getContext(), "You have selected position: " + i + "  Movie Info:" + movie.getTitle(), Toast.LENGTH_LONG).show();
             }
         });
         return rootView;
@@ -97,15 +92,25 @@ public class PopularMoviesFragment extends Fragment
                 for(MovieDetails movie : results)
                 {
                     movieDetailsAdapter.add(movie);
-                    Log.v(LOG_TAG, movie.getTitle());
                 }
-//                movieDetailsAdapter.addAll(results);
-
             }
         }
 
         @Override
         protected  ArrayList<MovieDetails> doInBackground(String... parameters) {
+
+            int READ_TIMEOUT = 1000;
+            int CONN_TIMEOUT = 1500;
+
+            String BASE_URL = getString(R.string.movie_base_url);
+            String VER = getString(R.string.movie_api_version_3);
+            String BASE_PATH = getString(R.string.movie_base_path_movie);
+            String Q_FIELD_API_KEY = getString(R.string.movie_param_api_key);
+            String Q_FIELD_LANG = getString(R.string.movie_param_lang);
+            String Q_PARAM_LANG = getString(R.string.movie_param_lang_type);
+            String Q_FIELD_PAGE = getString(R.string.movie_param_page);
+            String Q_PARAM_PAGE = "1";
+            String REQ_METHOD = getString(R.string.movie_request_type_get);
 
             if (parameters.length == 0)
                 return null;
@@ -115,35 +120,25 @@ public class PopularMoviesFragment extends Fragment
             String movieJsonStr;
 
             try{
-                String baseUrl = "https://api.themoviedb.org";
-                String version = "3";
-                String section = "movie";
-                String subSection = "popular";
-                String keyParam = "api_key";
-                String languageParam = "en-US";
-                String pageParam = "1";
 
-                Uri movieUri = Uri.parse(baseUrl).buildUpon()
-                        .appendPath(version)
-                        .appendPath(section)
+                Uri movieUri = Uri.parse(BASE_URL).buildUpon()
+                        .appendPath(VER)
+                        .appendPath(BASE_PATH)
                         .appendPath(parameters[0])
-                        .appendQueryParameter(keyParam, "")
-                        .appendQueryParameter("language", languageParam)
-                        .appendQueryParameter("page", pageParam)
+                        .appendQueryParameter(Q_FIELD_API_KEY, MOVIE_DB_API_KEY)
+                        .appendQueryParameter(Q_FIELD_LANG, Q_PARAM_LANG)
+                        .appendQueryParameter(Q_FIELD_PAGE, Q_PARAM_PAGE)
                         .build();
-                InputStream inStrm = null;
 
                 URL dataUrl = new URL(movieUri.toString());
-                Log.v(LOG_TAG, dataUrl.toString());
-
                 urlConnection = (HttpURLConnection) dataUrl.openConnection();
-                urlConnection.setReadTimeout(1000);
-                urlConnection.setConnectTimeout(1500);
-                urlConnection.setRequestMethod("GET");
+                urlConnection.setReadTimeout(READ_TIMEOUT);
+                urlConnection.setConnectTimeout(CONN_TIMEOUT);
+                urlConnection.setRequestMethod(REQ_METHOD);
                 urlConnection.setDoInput(true);
                 urlConnection.connect();
 
-                inStrm = urlConnection.getInputStream();
+                InputStream inStrm = urlConnection.getInputStream();
                 StringBuffer buffer = new StringBuffer();
                 if (inStrm == null)
                     return null;
@@ -185,8 +180,15 @@ public class PopularMoviesFragment extends Fragment
 
     private ArrayList<MovieDetails> extractMovieDetails(String jsonStr) throws JSONException
     {
+        String RESULTS = getString(R.string.movie_json_results);
+        String ORIG_TITLE = getString(R.string.movie_json_original_title);
+        String OVERVIEW = getString(R.string.movie_json_overview);
+        String POSTER_PATH = getString(R.string.movie_json_poster_path);
+        String RELEASE_DATE = getString(R.string.movie_json_release_date);
+        String VOTE_AVERAGE = getString(R.string.movie_json_vote_average);
+
         JSONObject movieArray = new JSONObject(jsonStr);
-        JSONArray results = movieArray.getJSONArray("results");
+        JSONArray results = movieArray.getJSONArray(RESULTS);
 
         ArrayList<MovieDetails> movieDetails = new ArrayList<>();
         for(int movie = 0; movie < results.length(); movie++)
@@ -194,11 +196,11 @@ public class PopularMoviesFragment extends Fragment
             MovieDetails movieDetail = new MovieDetails();
             JSONObject movieObject = results.getJSONObject(movie);
 
-            movieDetail.setTitle(movieObject.getString("original_title"));
-            movieDetail.setOverView(movieObject.getString("overview"));
-            movieDetail.setPosterPath(movieObject.getString("poster_path"));
-            movieDetail.setReleaseDate(movieObject.getString("release_date"));
-            movieDetail.setVoteAverage(movieObject.getDouble("vote_average"));
+            movieDetail.setTitle(movieObject.getString(ORIG_TITLE));
+            movieDetail.setOverView(movieObject.getString(OVERVIEW));
+            movieDetail.setPosterPath(movieObject.getString(POSTER_PATH));
+            movieDetail.setReleaseDate(movieObject.getString(RELEASE_DATE));
+            movieDetail.setVoteAverage(movieObject.getDouble(VOTE_AVERAGE));
 
             movieDetails.add(movieDetail);
         }
@@ -232,7 +234,6 @@ public class PopularMoviesFragment extends Fragment
             }
 
             Picasso.with(parent.getContext()).load(details.getPosterPath()).into(imageView);
-            Log.v(LOG_TAG, details.getPosterPath());
             return imageView;
         }
     }

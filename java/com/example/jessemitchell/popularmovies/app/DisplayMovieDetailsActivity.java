@@ -60,33 +60,36 @@ public class DisplayMovieDetailsActivity extends AppCompatActivity {
         public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
             Intent intent = getActivity().getIntent();
+            String movieDetailData = getString(R.string.movie_details_data);
             View rootView = inflater.inflate(R.layout.movie_detail_main,container,false);
 
-            ImageView imageView = (ImageView)rootView.findViewById(R.id.movie_image_view);
-//            imageView.setLayoutParams(new ImageView.LayoutParams(185, 278))
-            imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-            imageView.setPadding(10, 10, 10, 10);
 
-            if(intent != null && intent.hasExtra("MovieDetails_data"))
+            if(intent != null && intent.hasExtra(movieDetailData))
             {
-                movie = intent.getParcelableExtra("MovieDetails_data");
-                Log.v(LOG_TAG_FRAG, " Movie rating: " + movie.getVoteAverage().floatValue());
+                movie = intent.getParcelableExtra(movieDetailData);
 
+                // Set Title
                 ((TextView)rootView.findViewById(R.id.movie_text_view)).setText(movie.getTitle());
 
+                // Set Voter Average
                 ((RatingBar)rootView.findViewById(R.id.vote_average_bar)).setNumStars(5);
                 ((RatingBar)rootView.findViewById(R.id.vote_average_bar)).setRating(movie.getVoteAverage().floatValue());
 
+                // Change Image Size and display
+                ImageView imageView = (ImageView)rootView.findViewById(R.id.movie_image_view);
+                imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+                imageView.setPadding(10, 10, 10, 10);
                 Picasso.with(getContext()).load(movie.getPosterPath()).into(imageView);
-//                Picasso.with(getContext()).load(movie.getPosterPath()).into((ImageView)rootView.findViewById(R.id.movie_image_view));
 
+                // Set Release Date
                 ((TextView)rootView.findViewById(R.id.date_text_view)).setText(movie.getReleaseDate());
 
+                // Set Overview text
                 ((TextView)rootView.findViewById(R.id.overview_text_view)).setText(movie.getOverView());
                 ((TextView)rootView.findViewById(R.id.overview_text_view)).setMovementMethod(new ScrollingMovementMethod());
-
             }
-
+            else
+                Log.e(LOG_TAG_FRAG, "Intent was null or data was not sent.");
             return rootView;
         }
 

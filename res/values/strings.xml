@@ -1,7 +1,31 @@
 <resources>
     <string name="app_name">PopularMovies</string>
-    <string name="title_activity_settings">Settings</string>
 
+    <!-- URL Strings -->
+    <string name="movie_base_url">https://api.themoviedb.org</string>
+    <string name="movie_api_version_3">3</string>
+    <string name="movie_api_version_4">4</string>
+    <string name="movie_base_path_movie">movie</string>
+    <string name="movie_base_path_person">person</string>
+    <string name="movie_param_api_key">api_key</string>
+    <string name="movie_param_lang">language</string>
+    <string name="movie_param_lang_type">en-US</string>
+    <string name="movie_param_page">page</string>
+    <string name="movie_request_type_get">GET</string>
+    <string name="movie_request_type_post">POST</string>
+
+    <!-- MovieDb JSON params -->
+    <string name="movie_json_results">results</string>
+    <string name="movie_json_original_title">original_title</string>
+    <string name="movie_json_overview">overview</string>
+    <string name="movie_json_poster_path">poster_path</string>
+    <string name="movie_json_release_date">release_date</string>
+    <string name="movie_json_vote_average">vote_average</string>
+
+    <!-- Parcelable MovieDetail Object Id -->
+    <string name="movie_details_data">DATA_MOVIEDETAILS</string>
+    <!-- Preference Settings Strings -->
+    <string name="title_activity_settings">Settings</string>
     <string name="pref_list_key">popular</string>
     <string name="pref_list_default">popular</string>
     <string name="movie_list">popular</string>
@@ -13,5 +37,7 @@
         <item>popular</item>
         <item>top_rated</item>
     </string-array>
+
+
 
 </resources>
