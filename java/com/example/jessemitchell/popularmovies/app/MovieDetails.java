@@ -2,10 +2,10 @@ package com.example.jessemitchell.popularmovies.app;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
 
 /**
  * Created by jesse.mitchell on 12/29/2016.
+ * Followed http://www.developerphil.com/parcelable-vs-serializable/ to add Parcelable to this object.
  */
 
 public class MovieDetails implements Parcelable

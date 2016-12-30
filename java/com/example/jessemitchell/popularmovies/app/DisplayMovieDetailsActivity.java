@@ -84,9 +84,11 @@ public class DisplayMovieDetailsActivity extends AppCompatActivity {
                 // Set Release Date
                 ((TextView)rootView.findViewById(R.id.date_text_view)).setText(movie.getReleaseDate());
 
-                // Set Overview text
+                // Set Overview text.
+                // setMovementMethod http://stackoverflow.com/questions/1748977/making-textview-scrollable-in-android
                 ((TextView)rootView.findViewById(R.id.overview_text_view)).setText(movie.getOverView());
-                ((TextView)rootView.findViewById(R.id.overview_text_view)).setMovementMethod(new ScrollingMovementMethod());
+                ((TextView)rootView.findViewById(R.id.overview_text_view))
+                        .setMovementMethod(new ScrollingMovementMethod());
             }
             else
                 Log.e(LOG_TAG_FRAG, "Intent was null or data was not sent.");

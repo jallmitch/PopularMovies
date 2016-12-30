@@ -208,6 +208,7 @@ public class PopularMoviesFragment extends Fragment
         return movieDetails;
     }
 
+    // Used https://github.com/udacity/android-custom-arrayadapter as a guide to builde the adapter
     public class ImageAdapter extends ArrayAdapter<MovieDetails>
     {
         private final String LOG_TAG = ImageAdapter.class.getSimpleName();
