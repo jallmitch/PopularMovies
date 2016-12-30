@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">PopularMovies</string>
+    <string name="title_activity_settings">Settings</string>
+
+    <string name="pref_list_key">popular</string>
+    <string name="pref_list_default">popular</string>
+    <string name="movie_list">popular</string>
+    <string-array name="pref_movie_lists">
+        <item>Popular</item>
+        <item>Top Rated</item>
+    </string-array>
+    <string-array name="pref_movie_list_values">
+        <item>popular</item>
+        <item>top_rated</item>
+    </string-array>
+
+</resources>

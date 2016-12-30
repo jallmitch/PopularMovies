@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/colorPrimary"
+    android:id="@+id/detail_container"
+    android:scrollbars="vertical"
+    >
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/movie_text_view"
+        android:layout_alignParentTop="true"
+        tools:text="Rogue One: A Star Wars Story"
+        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+        android:gravity="center"
+        android:textColor="@android:color/background_light" />
+
+    <ImageView
+        android:layout_width="150dp"
+        android:layout_height="215dp"
+        android:id="@+id/movie_image_view"
+        android:layout_below="@+id/vote_average_bar"
+        android:layout_centerHorizontal="true"
+        />
+
+    <RatingBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/vote_average_bar"
+        android:rating="4"
+        android:layout_below="@+id/movie_text_view"
+        android:layout_centerHorizontal="true"
+        android:background="@color/colorPrimary"
+        android:isIndicator="false"
+        style="@style/Widget.AppCompat.RatingBar.Indicator" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/movie_image_view"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/date_text_view"
+        tools:text="Released: 2016-12-14"
+        android:textColor="@android:color/background_light"
+        android:textColorHighlight="@android:color/white"
+        android:textSize="18sp"
+        android:textAppearance="@style/TextAppearance.AppCompat" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/overview_text_view"
+        android:layout_below="@+id/date_text_view"
+        tools:text="A rogue band of resistance fighters unite for a mission to steal the Death Star plans and bring a new hope to the galaxy."
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:padding="10dp"
+        android:textColor="@android:color/white"
+        android:textSize="14sp"/>
+</RelativeLayout>
